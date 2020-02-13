@@ -1,0 +1,76 @@
+.nav a{
+  text-align: center;
+}
+
+.nav ul{
+  width: 80%;
+  list-style: none;
+  border: 1px solid gray;
+  display:flex;
+  margin: 0;
+  align-items: center;
+  
+}
+.nav li {
+  line-height: 100px;
+}
+.nav-login{
+  width:19%;
+  justify-content: flex-end;
+  border: 1px solid gray;
+  align-items: center;
+  display:flex;
+}
+
+.body {
+  min-height: 100vh;
+}
+.nav-link {
+  padding: 1.5rem
+}
+.navbar {
+  border-bottom: 1px solid rgb(209, 201, 201);
+}
+.NavDropdown{
+  border-bottom: none !important;
+}
+.NavDropdownToggle{
+  padding: 0;
+  height: 100%;
+  border: none;
+}
+.NavDropdownToggle::after{
+  content: none;
+}
+.NavElem {
+  padding-top: 10px;
+  padding-bottom: 10px;  
+  padding-right: 10px;
+  padding-left: 10px;
+  color: white
+}
+.NavElemSelected{
+  padding-top: 10px;
+  padding-bottom: 10px;
+  padding-right: 10px;
+  padding-left: 10px;
+  color: grey
+}
+.NavElem:Hover{
+  color: white;
+}
+
+span {
+  color: white;
+}
+.LogOutButton{
+  font-size: 0.6em;
+  border-radius: 20px; 
+  padding: 0.8em 2em;
+  color:white !important;
+  border: 1px solid white
+}
+.LogOutButton:hover{
+  color: rgb(255, 255, 255) !important;
+  border: 1px solid  rgb(0, 0, 0)
+}

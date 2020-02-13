@@ -1,0 +1,38 @@
+
+div.dashboard {
+    position: absolute;
+    width: 100%;
+    background-color: rgb(200,200,200);
+    height: 100% !important;
+}
+
+h1 {
+    padding-left: 10px;
+}
+
+div.button {
+    margin: 10px;
+    display:flex;
+    justify-content: flex-end;
+}
+
+Button.start {
+    margin-right: 5px;
+    right: 0;
+    background-color: green !important;
+}
+
+Button.start:hover {
+    background-color: lightgreen !important;
+}
+
+Button.end {
+    right: 0;
+    background-color: red !important;
+}
+
+Button.end:hover {
+    right: 0;
+    background-color: lightpink !important;
+}
+

@@ -1,0 +1,23 @@
+@media all and (min-width: 480px) {
+  .Login {
+    padding: 60px 0;
+  }
+
+  .logo {
+    width: 250px;
+    height: 250px;
+
+  }
+
+  .inputLabel {
+    margin-bottom: 20px;
+    width: auto;
+  }
+  
+  .Login form {
+    border: 1px solid gray;
+    margin: 0 auto;
+    max-width: 400px;
+    padding: 40px;
+  }
+}
