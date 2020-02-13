@@ -1,21 +1,18 @@
 import React, { Component } from "react";
 import { Link } from 'react-router-dom';
 import * as ROUTES from '../../constants/routes';
-import { AuthUserContext } from '../Session';
 import { Navbar, Nav, Button } from 'react-bootstrap';
 import { nav } from '../Styles/nav.css'
-import { withFirebase } from '../Firebase';
 import { compose } from 'recompose';
-import { withAuthentication } from '../Session';
 import NavBarLogo from '../../images/logo.jpg'
-
+import {connect} from 'react-redux'
+import {signOut} from '../../state/actions/authActions'
 class NavigationBar extends Component {
 
   constructor(props) {
     super(props);
 
     this.state = {
-      auth:this.props.auth,
       selectedLink: '',
     }
 
@@ -24,7 +21,7 @@ class NavigationBar extends Component {
   }
 
   logout() {
-    this.props.firebase.doSignOut()
+    this.props.signOut();
   }
 
   isSelected(linkName) {
@@ -32,7 +29,7 @@ class NavigationBar extends Component {
   }
 
   getLinkList() {
-    let linkList =  ['Dashboard', 'Races', 'Test 3', 'Test 4']
+    let linkList =  ['Dashboard', 'Races', 'Contestants', 'Test 4']
     return linkList
   }
 
@@ -75,4 +72,10 @@ class NavigationBar extends Component {
   }
 }
 
-export default withAuthentication(NavigationBar);
+const mapDispatchToProps = (dispatch) => {
+  return {
+    signOut: () => dispatch(signOut())
+  }
+}
+
+export default connect(null, mapDispatchToProps)(NavigationBar)

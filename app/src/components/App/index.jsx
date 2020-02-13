@@ -8,24 +8,39 @@ import Navigation from '../Navigation';
 import SignInPage from '../SignIn';
 import DashboardPage from '../Dashboard';
 import * as ROUTES from '../../constants/routes';
-import { AuthUserContext } from '../Session';
 
-import { withAuthentication } from '../Session';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import {connect} from 'react-redux'
+import { useSelector } from 'react-redux'
+import { useFirebase, isLoaded, isEmpty } from 'react-redux-firebase'
+import PrivateRoute from '../PrivateRoute/index'
 
+function AuthIsLoaded({ children }) {
+  const auth = useSelector(state => state.firebase.auth)
+  if (!isLoaded(auth)) return <div></div>;
 
-const App = () => (
-  <AuthUserContext.Consumer>
-  { authUser =>
-    <Router>
-      {authUser ? <Navigation/> : null}
-        <Route exact path="/"> authUser ? <Redirect to="/login" /> : <Redirect to="/dashboard" /> </Route>
-        <Route exact path={ROUTES.DASHBOARD} component={DashboardPage} />
-        <Route path={ROUTES.SIGN_IN} component={SignInPage} />
-    </Router>
+  return children;
+}
+
+function App() {
+    const auth = useSelector(state => state.firebase.auth);
+    return (
+      <AuthIsLoaded>
+        <Router>
+            {isLoaded(auth) && isEmpty(auth) ? null : <Navigation/>}
+            <Route exact path="/"> {(isLoaded(auth) && !isEmpty(auth)) ? <Redirect to="/login" /> : <Redirect to="/dashboard" /> }</Route>
+            <Route path={ROUTES.SIGN_IN} component={SignInPage} />
+            <PrivateRoute path={ROUTES.DASHBOARD}>
+              <DashboardPage/>
+            </PrivateRoute> 
+        </Router>
+      </AuthIsLoaded>
+      );
+}
+const mapStateToProps = (state) => {
+  return {
+
   }
-</AuthUserContext.Consumer>
-  
-  
-);
-export default withAuthentication(App);
+}
+
+export default connect(mapStateToProps)(App);

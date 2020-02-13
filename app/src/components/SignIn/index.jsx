@@ -1,21 +1,21 @@
 import React, { Component } from 'react';
 import { withRouter } from 'react-router-dom';
 import { compose } from 'recompose';
-import { withFirebase } from '../Firebase';
 import * as ROUTES from '../../constants/routes';
-
+import {connect} from 'react-redux'
+import {signIn} from '../../state/actions/authActions'
 import {Button, OutlinedInput, FormControl, InputLabel } from '@material-ui/core';
+import {Redirect} from 'react-router-dom'
 
 import "./index.css";
 
 const SignInPage = () => (
-    <SignInForm />
+    <SignInFormBase/>
 );
 
 const INITIAL_STATE = {
   email: '',
   password: '',
-  error: null,
 };
 
 class SignInFormBase extends Component {
@@ -24,29 +24,26 @@ class SignInFormBase extends Component {
     this.state = { ...INITIAL_STATE };
   }
   onSubmit = event => {
-    const { email, password } = this.state;
-    this.props.firebase
-      .doSignInWithEmailAndPassword(email, password)
-      .then(() => {
-        this.setState({ ...INITIAL_STATE });
-        this.props.history.push(ROUTES.DASHBOARD);
-      })
-      .catch(error => {
-        this.setState({ error });
-      });
     event.preventDefault();
+    const { email, password } = this.state;
+    console.log(this.props);
+    this.props.signIn(this.state)
   };
   onChange = event => {
     this.setState({ [event.target.name]: event.target.value });
   };
   render() {
+
     var logo = require('../../images/logo.jpg')
     const { email, password, error } = this.state;
     const isInvalid = password === '' || email === '';
-    return (
-      
-      <div className="Login">
 
+    const { auth } = this.props;
+    
+    if (auth.uid) return <Redirect to="/dashboard"/>
+
+    return (
+      <div className="Login">
         <form onSubmit={this.onSubmit}>
         <FormControl variant="outlined" fullWidth>
           <InputLabel ref="email" htmlFor="component-outlined">
@@ -88,10 +85,17 @@ class SignInFormBase extends Component {
     );
   }
 }
-const SignInForm = compose(
-  withRouter,
-  withFirebase,
-)(SignInFormBase);
 
-export default SignInPage;
-export { SignInForm };
+const mapDispatchToProps = (dispatch) => {
+  return {
+    signIn: (creds) => dispatch(signIn(creds)),
+  }
+}
+
+const mapStateToProps = (state) => {
+  return {
+    auth: state.firebase.auth
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(SignInFormBase);

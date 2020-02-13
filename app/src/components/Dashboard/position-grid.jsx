@@ -3,7 +3,6 @@ import {SortableContainer, SortableElement} from 'react-sortable-hoc';
 import arrayMove from 'array-move';
 import Cell from './cell';
 import '../Styles/data-table.css';
-import {withFirebase} from '../Firebase/context';
 
 const SortableItem = SortableElement(({contestant}) => 
 <tr> 
@@ -38,23 +37,23 @@ class PositionGrid extends Component {
 
     componentDidMount() {
       this.setState({ loading: true });
-      this.unsubscribe = this.props.firebase
-      .contestants('race-2019-01-01')
-      .orderBy("position")
-      .onSnapshot(snapshot => {
-        let contestants = [];
-        snapshot.forEach(doc =>
-          contestants.push({ ...doc.data(), uid: doc.id }),
-        );
-        this.setState({
-          contestants,
-          loading: false,
-        });
-      });
+      // this.unsubscribe = this.props.firebase
+      // .contestants('race-2019-01-01')
+      // .orderBy("position")
+      // .onSnapshot(snapshot => {
+      //   let contestants = [];
+      //   snapshot.forEach(doc =>
+      //     contestants.push({ ...doc.data(), uid: doc.id }),
+      //   );
+      //   this.setState({
+      //     contestants,
+      //     loading: false,
+      //   });
+      // });
     }
 
     componentWillUnmount() {
-      this.unsubscribe();
+      // this.unsubscribe();
     }
 
      onSortEnd = ({oldIndex, newIndex}) => {
@@ -86,4 +85,4 @@ class PositionGrid extends Component {
   }  
 
   
-export default withFirebase(PositionGrid);
+export default PositionGrid
