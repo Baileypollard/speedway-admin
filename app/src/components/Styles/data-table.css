@@ -16,3 +16,25 @@
     padding: 4px;
     text-align: center;
   }
+
+  Button.increment-lap, Button.increment-lap:focus {
+    background-color: green !important;
+    width: 100%;
+  }
+
+  Button.increment-lap:hover, Button.increment-lap:active {
+    background-color: lightgreen !important;
+    width: 100%;
+  }
+
+  Button.decrement-lap, Button.decrement-lap:focus {
+    background-color: red !important;
+    width: 100%;
+    margin-top: 5px;
+  }
+
+  Button.decrement-lap:hover, Button.decrement-lap:hover:active {
+    background-color:lightpink !important;
+    width: 100%;
+    margin-top: 5px;
+  }

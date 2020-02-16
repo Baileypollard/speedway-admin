@@ -8,6 +8,7 @@ import {compose} from 'redux'
 import {connect} from 'react-redux'
 import {updatePositions} from '../../state/actions/dashboadActions'
 import { firestoreDataSelector, firestoreOrderedSelector } from 'redux-firestore'
+import {Button} from 'react-bootstrap'
 
 const SortableItem = SortableElement(({contestant}) => 
 <tr> 
@@ -16,6 +17,10 @@ const SortableItem = SortableElement(({contestant}) =>
   <Cell key={"name"} content={contestant.name}/>
   <Cell key={"number"} content={contestant.carNumber}/>
   <Cell key={"lapsCompleted"} content={contestant.lapsCompleted}/>
+  <td>
+      <Button className="increment-lap">Increment Lap</Button>
+      <Button className="decrement-lap">Decrement Lap</Button>
+  </td>
 </tr>);
 
 const SortableList = SortableContainer(({items}) => {
@@ -25,12 +30,9 @@ const SortableList = SortableContainer(({items}) => {
   return (
       <tbody>
         {
-        // items.map((value, index) => (
-        //    <SortableItem key={`contestant-${value.name}`} index={index} contestant={value}/>
-        // ))
-        Object.values(items).map((d, key) => {
-          return <SortableItem key={`contestant-${d.name}`} index={key} contestant={d}/>
-        })
+          Object.values(items).map((d, key) => {
+            return <SortableItem key={`contestant-${d.name}`} index={key} contestant={d}/>
+          })
         }
       </tbody>
   );
@@ -44,7 +46,7 @@ class PositionGrid extends Component {
       this.state = {
         loading: false,
         contestants: [],
-        headers:["Position", "Photo", "Name", "Car Number", "Laps Completed"]
+        headers:["Position", "Photo", "Name", "Car Number", "Laps Completed", "Actions"]
       };
     }
     static getDerivedStateFromProps(props, state) {
@@ -74,18 +76,6 @@ class PositionGrid extends Component {
       }
   }  
 
-const contestantQuery =  {
-  collection:'races',
-  doc: 'race-2019-01-01',
-  storeAs:'racers',
-  subcollections: [
-    {
-      collection:'contestants',
-      orderBy:'position',
-    },
-  ],
-}  
-
 const mapDispatchToProps = (dispatch) => {
   return {
     updatePositions: (contestants) => dispatch(updatePositions(contestants))
@@ -94,6 +84,7 @@ const mapDispatchToProps = (dispatch) => {
 
 const mapStateToProps = (state) => {
   var contestants = state.firestore.ordered['racers'] !== undefined ? state.firestore.ordered['racers'] : [];
+  //Sorting here since the DB query orderby is not reliable
   var sortedContestants = contestants.slice().sort((a,b) => { return a.position - b.position});      
   return {
     contestants: sortedContestants
