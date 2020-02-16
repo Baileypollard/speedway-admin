@@ -36,3 +36,44 @@ export const updateLapCount = (contestant, newLapCount) => {
         })
     };    
 };
+
+export const startRace = (race) => {
+    var d = new Date();
+    return (dispatch, getState, {getFirestore}) => 
+    {
+        const firestore = getFirestore();
+
+        firestore.update({
+            collection:'races', 
+            doc:race.id,
+        }, 
+        {
+            state: 'STARTED',
+            startTime:d.toLocaleString()
+        })
+        .then(() => {
+            dispatch({type:'STARTED_RACE', race})
+        }).catch((err) => {
+
+        })
+    };    
+};
+
+export const endRace = (race) => {
+    var d = new Date();
+
+    return (dispatch, getState, {getFirestore}) => 
+    {
+        const firestore = getFirestore();
+        firestore.update({collection:'races', doc:race.id}, 
+        {
+            state: 'ENDED',
+            endTime : d.toLocaleString()
+        })
+        .then(() => {
+            dispatch({type:'ENDED_RACE', race})
+        }).catch((err) => {
+            
+        })
+    };    
+};

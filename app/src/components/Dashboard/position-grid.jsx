@@ -45,7 +45,6 @@ class PositionGrid extends Component {
       super(props);
 
       this.state = {
-        loading: false,
         contestants: [],
         headers:["Position", "Photo", "Name", "Car Number", "Laps Completed", "Actions"]
       };
@@ -112,10 +111,10 @@ const mapStateToProps = (state) => {
 }
   
 export default compose(
-  firestoreConnect([
+  firestoreConnect((props) => [
     {
       collection:'races',
-      doc: 'race-2019-01-01',
+      doc: props.race.id,
       storeAs:'racers',
       subcollections: [
         {
@@ -125,5 +124,5 @@ export default compose(
     }
   ]),
   connect(mapStateToProps, mapDispatchToProps),
-  
+
 )(PositionGrid)

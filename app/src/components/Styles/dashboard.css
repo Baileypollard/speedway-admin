@@ -22,6 +22,12 @@ Button.start {
     background-color: green !important;
 }
 
+Button.start:disabled, Button.start:disabled:hover {
+    margin-right: 5px;
+    right: 0;
+    background-color: grey !important;
+}
+
 Button.start:hover {
     background-color: lightgreen !important;
 }
@@ -31,8 +37,17 @@ Button.end {
     background-color: red !important;
 }
 
+Button.end:disabled, Button.end:disabled:hover {
+    right: 0;
+    background-color: grey !important;
+}
+
 Button.end:hover {
     right: 0;
     background-color: lightpink !important;
+}
+
+Button.mr-auto:disabled {
+    background-color: grey !important;
 }
 

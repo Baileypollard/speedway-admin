@@ -1,4 +1,5 @@
 const initState = {
+    activeRace : null
 }
 
 const dashboardReducer = (state = initState, action) => {
@@ -11,8 +12,15 @@ const dashboardReducer = (state = initState, action) => {
             return state;
         case 'UPDATED_LAP_COUNT':
             console.log('updated lap count')
-            return state    
-              
+            return state
+        case 'STARTED_RACE':
+            return {...state,
+                activeRace: action.startedRace
+            };        
+        case 'ENDED_RACE':
+            return {...state,
+                activeRace : null
+            }      
         default:
             return state;    
     }
