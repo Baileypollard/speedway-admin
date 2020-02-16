@@ -20,3 +20,19 @@ export const updatePositions = (contestants) => {
         })
     };    
 };
+
+
+export const updateLapCount = (contestant, newLapCount) => {
+
+    return (dispatch, getState, {getFirestore}) => 
+    {
+        const firestore = getFirestore();
+
+        firestore.update({collection:'races', doc:'race-2019-01-01', 
+        subcollections:[{collection:'contestants', doc:contestant.id}]}, 
+        {lapsCompleted: newLapCount})
+        .then(() => {
+            dispatch({type:'UPDATED_LAP_COUNT'})
+        })
+    };    
+};

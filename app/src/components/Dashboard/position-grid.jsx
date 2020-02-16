@@ -6,11 +6,11 @@ import '../Styles/data-table.css';
 import {firestoreConnect} from 'react-redux-firebase'
 import {compose} from 'redux'
 import {connect} from 'react-redux'
-import {updatePositions} from '../../state/actions/dashboadActions'
+import {updatePositions, updateLapCount} from '../../state/actions/dashboadActions'
 import { firestoreDataSelector, firestoreOrderedSelector } from 'redux-firestore'
 import {Button} from 'react-bootstrap'
 
-const SortableItem = SortableElement(({contestant}) => 
+const SortableItem = SortableElement(({contestant, increment, decrement}) => 
 <tr> 
   <Cell key={contestant + "-position"} content={contestant.position}/> 
   <Cell key={"photo"} content={"N/A"}/>
@@ -18,12 +18,12 @@ const SortableItem = SortableElement(({contestant}) =>
   <Cell key={"number"} content={contestant.carNumber}/>
   <Cell key={"lapsCompleted"} content={contestant.lapsCompleted}/>
   <td>
-      <Button className="increment-lap">Increment Lap</Button>
-      <Button className="decrement-lap">Decrement Lap</Button>
+    <Button className="increment-lap" onClick={() => increment(contestant)}>Increment Lap</Button>
+    <Button className="decrement-lap" onClick={() => decrement(contestant)}>Decrement Lap</Button>
   </td>
 </tr>);
 
-const SortableList = SortableContainer(({items}) => {
+const SortableList = SortableContainer(({items, increment, decrement}) => {
   if (items === undefined) 
     items = []
 
@@ -31,7 +31,8 @@ const SortableList = SortableContainer(({items}) => {
       <tbody>
         {
           Object.values(items).map((d, key) => {
-            return <SortableItem key={`contestant-${d.name}`} index={key} contestant={d}/>
+            return <SortableItem key={`contestant-${d.name}`} index={key} 
+            contestant={d} increment={increment} decrement={decrement}/>
           })
         }
       </tbody>
@@ -48,7 +49,11 @@ class PositionGrid extends Component {
         contestants: [],
         headers:["Position", "Photo", "Name", "Car Number", "Laps Completed", "Actions"]
       };
+
+      this.incrementLapCount = this.incrementLapCount.bind(this)
+      this.decrementLapCount = this.decrementLapCount.bind(this)
     }
+
     static getDerivedStateFromProps(props, state) {
       if (props.contestants !== state.contestants) {
         if (props.contestants != null)
@@ -56,12 +61,26 @@ class PositionGrid extends Component {
       }
       return null
     }
+
     onSortEnd = ({oldIndex, newIndex}) => {
       var newArray = arrayMove(this.state.contestants, oldIndex, newIndex);
       this.props.updatePositions(newArray)
     }
 
-      render() {
+    incrementLapCount(contestant) {
+      var newLapCount = contestant.lapsCompleted + 1;
+      this.props.updateLapCount(contestant, newLapCount);
+    }
+    
+    decrementLapCount (contestant) {
+      if (contestant.lapsCompleted > 0) {
+        var newLapCount = contestant.lapsCompleted - 1;
+        this.props.updateLapCount(contestant, newLapCount);
+      }
+    }
+    
+
+    render() {
         return <div className="table-container">
           <table className="table">
             <thead>
@@ -69,7 +88,7 @@ class PositionGrid extends Component {
                 <Cell key={"header-" + index} content={value} header={true}/>
               ))}  
             </thead>
-            <SortableList items={this.state.contestants} onSortEnd={this.onSortEnd}/> 
+            <SortableList items={this.state.contestants} onSortEnd={this.onSortEnd} increment={this.incrementLapCount} decrement={this.decrementLapCount}/> 
           </table>
           </div>
         
@@ -78,7 +97,8 @@ class PositionGrid extends Component {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    updatePositions: (contestants) => dispatch(updatePositions(contestants))
+    updatePositions: (contestants) => dispatch(updatePositions(contestants)),
+    updateLapCount: (contestant, newLapCount) => dispatch(updateLapCount(contestant, newLapCount))
   }
 }
 
