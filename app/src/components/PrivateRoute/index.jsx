@@ -10,7 +10,6 @@ import { isLoaded, isEmpty } from 'react-redux-firebase'
 
 function PrivateRoute({ children, ...rest }) {
   const auth = useSelector(state => state.firebase.auth)
-  console.log(auth)
   return (
     <Route
       {...rest}

@@ -14,19 +14,21 @@ import { createFirestoreInstance, firestoreReducer } from 'redux-firestore'
 import { ReactReduxFirebaseProvider, firebaseReducer } from 'react-redux-firebase'
 
 import authReducer from './state/reducers/authReducer'
+import dashboardReducer from './state/reducers/dashboardReducer'
 
-const initialState = {}
 
 const rootReducer = combineReducers({
   firebase: firebaseReducer,
   firestore: firestoreReducer,
-  auth: authReducer 
+  auth: authReducer,
+  dashboard: dashboardReducer 
 });
 
 const store = createStore(
   rootReducer, 
-  initialState,
-  applyMiddleware(thunk)   
+  compose(
+  applyMiddleware(thunk.withExtraArgument({getFirestore})),
+  reduxFirestore(firebase))
 );
 
 const rrfConfig = {
