@@ -6,7 +6,7 @@ import {startRace, endRace} from '../../state/actions/dashboadActions'
 import {compose} from 'redux'
 import {firestoreConnect} from 'react-redux-firebase'
 import {connect} from 'react-redux'
-
+import CollapisbleHeader from './collapsible-header'
 class DashboardPage extends Component {
 
   startRace(race) {
@@ -21,11 +21,11 @@ class DashboardPage extends Component {
   render() {
     const race = this.props.race;
     if (race != null) {
-      console.log(this.props)
       var isStarted = (race.state == 'STARTED') ? true : false;
       console.log(isStarted)
       return <div className="dashboard">
         <h1>Live Race</h1>
+        <CollapisbleHeader race={race}/>
         <div className="button">
           <Button className="mr-auto" disabled={isStarted}>Add Contestant</Button>
           <Button className="start" disabled={isStarted} onClick={() => this.startRace(race)}>Start Race</Button>

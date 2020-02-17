@@ -1,7 +1,8 @@
 
 div.dashboard {
     position: absolute;
-    width: 100%;
+    overflow: scroll;
+    width: 100% !important;
     background-color: rgb(200,200,200);
     height: 100% !important;
 }
@@ -51,3 +52,22 @@ Button.mr-auto:disabled {
     background-color: grey !important;
 }
 
+
+.collapsible-header {
+    height: 30px;
+    padding: 0px !important;
+    margin: 0px !important;
+    padding-left: 10px !important;
+    position: relative;
+    background-color: rgb(46, 51, 56) !important;    
+    align-content: center !important;
+}
+
+.collapsible-content {
+    width: 100%;
+}
+
+.collapsible-div {
+    width: 100%;
+    padding: 10px;
+}
