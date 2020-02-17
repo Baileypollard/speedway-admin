@@ -1,5 +1,6 @@
 import * as React from 'react';
 import '../Styles/data-table.css'
+
 export default function Cell({
   content,
   header,

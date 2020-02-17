@@ -11,17 +11,18 @@ import { firestoreDataSelector, firestoreOrderedSelector } from 'redux-firestore
 import {Button} from 'react-bootstrap'
 
 const SortableItem = SortableElement(({contestant, increment, decrement}) => 
-<tr> 
-  <Cell key={contestant + "-position"} content={contestant.position}/> 
-  <Cell key={"photo"} content={"N/A"}/>
-  <Cell key={"name"} content={contestant.name}/>
-  <Cell key={"number"} content={contestant.carNumber}/>
-  <Cell key={"lapsCompleted"} content={contestant.lapsCompleted}/>
-  <td>
-    <Button className="increment-lap" onClick={() => increment(contestant)}>Increment Lap</Button>
-    <Button className="decrement-lap" onClick={() => decrement(contestant)}>Decrement Lap</Button>
-  </td>
-</tr>);
+  <tr> 
+    <Cell key={contestant + "-position"} content={contestant.position}/> 
+    <Cell key={"photo"} content={"N/A"}/>
+    <Cell key={"name"} content={contestant.name}/>
+    <Cell key={"number"} content={contestant.carNumber}/>
+    <Cell key={"lapsCompleted"} content={contestant.lapsCompleted}/>
+    <td>
+      <Button className="increment-lap" onClick={() => increment(contestant)}>Increment Lap</Button>
+      <Button className="decrement-lap" onClick={() => decrement(contestant)}>Decrement Lap</Button>
+    </td>
+  </tr>
+);
 
 const SortableList = SortableContainer(({items, increment, decrement}) => {
   if (items === undefined) 
@@ -83,9 +84,11 @@ class PositionGrid extends Component {
         return <div className="table-container">
           <table className="table">
             <thead>
-              {this.state.headers.map((value, index) => (
-                <Cell key={"header-" + index} content={value} header={true}/>
-              ))}  
+              {
+                this.state.headers.map((value, index) => (
+                  <Cell key={"header-" + index} content={value} header={true}/>
+                ))
+              }  
             </thead>
             <SortableList items={this.state.contestants} onSortEnd={this.onSortEnd} increment={this.incrementLapCount} decrement={this.decrementLapCount}/> 
           </table>

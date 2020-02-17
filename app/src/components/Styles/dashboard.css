@@ -3,8 +3,8 @@ div.dashboard {
     position: absolute;
     overflow: scroll;
     width: 100% !important;
-    background-color: rgb(200,200,200);
     height: 100% !important;
+    background-color: rgb(200,200,200);
 }
 
 h1 {

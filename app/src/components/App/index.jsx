@@ -7,6 +7,8 @@ import React, { Component } from 'react';
 import Navigation from '../Navigation';
 import SignInPage from '../SignIn';
 import DashboardPage from '../Dashboard';
+import RacesPage from '../Races';
+
 import * as ROUTES from '../../constants/routes';
 
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -32,7 +34,10 @@ function App() {
             <Route path={ROUTES.SIGN_IN} component={SignInPage} />
             <PrivateRoute path={ROUTES.DASHBOARD}>
               <DashboardPage/>
-            </PrivateRoute> 
+            </PrivateRoute>
+            <PrivateRoute path={ROUTES.RACES}>
+              <RacesPage/>
+            </PrivateRoute>  
         </Router>
       </AuthIsLoaded>
       );

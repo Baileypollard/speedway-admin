@@ -22,7 +22,6 @@ class DashboardPage extends Component {
     const race = this.props.race;
     if (race != null) {
       var isStarted = (race.state == 'STARTED') ? true : false;
-      console.log(isStarted)
       return <div className="dashboard">
         <h1>Live Race</h1>
         <CollapisbleHeader race={race}/>

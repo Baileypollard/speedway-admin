@@ -12,7 +12,7 @@ class CollapsibleHeader extends Component {
         return <div className="collapsible-div">
                 <CollapsibleComponent>
                     <CollapsibleHead className="collapsible-header">
-                        {this.props.race.name}
+                        {this.props.race.name} • {this.props.race.description}
                     </CollapsibleHead>
                     <CollapsibleContent className="collapsible-content">
                         <p>
