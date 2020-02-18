@@ -15,13 +15,14 @@ import { ReactReduxFirebaseProvider, firebaseReducer } from 'react-redux-firebas
 
 import authReducer from './state/reducers/authReducer'
 import dashboardReducer from './state/reducers/dashboardReducer'
-
+import raceReducer from './state/reducers/raceReducer'
 
 const rootReducer = combineReducers({
   firebase: firebaseReducer,
   firestore: firestoreReducer,
   auth: authReducer,
-  dashboard: dashboardReducer 
+  dashboard: dashboardReducer,
+  race: raceReducer
 });
 
 const store = createStore(

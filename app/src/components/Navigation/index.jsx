@@ -39,7 +39,7 @@ class NavigationBar extends Component {
         <Navbar bg="dark" expand="lg">
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
           <Navbar.Collapse id="basic-navbar-nav">
-            <Navbar.Brand href="#home">
+            <Navbar.Brand href="/dashboard">
               <span>Looney Speed Way</span>
             </Navbar.Brand>
             <Nav className="mr-auto">

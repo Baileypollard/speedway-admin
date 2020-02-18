@@ -4,60 +4,50 @@ import Cell from '../Dashboard/cell'
 import {compose} from 'redux'
 import {firestoreConnect} from 'react-redux-firebase'
 import {connect} from 'react-redux'
-
-function RaceRow({race}) {
-    return <tr> 
-        <Cell key={race.id} content={race.id}/> 
-        <Cell key={"name"} content={race.name}/>
-        <Cell key={"description"} content={race.description}/>
-        <Cell key={"total-laps"} content={race.totalLaps}/>
-        <Cell key={"start-time"} content={race.startTime}/>
-        <Cell key={"end-time"} content={race.endTime}/>
-        <Cell key={"state"} content={race.state}/>
-        {/* <td>
-            <Button className="increment-lap" onClick={() => increment(contestant)}>Increment Lap</Button>
-            <Button className="decrement-lap" onClick={() => decrement(contestant)}>Decrement Lap</Button>
-        </td> */}
-        </tr>       
-};
-
-function RaceList({races}) {
-    if (races === undefined) 
-      races = []
-  
-    return (
-        <tbody>
-          {
-            Object.values(races).map((d, key) => {
-              return <RaceRow key={`contestant-${d.name}`} index={key} race={d}/>
-            })
-          }
-        </tbody>
-    );
-  };
+import {Button} from 'react-bootstrap'
+import ReactTable from 'react-table-6';
+import 'react-table-6/react-table.css'
+import {deleteRace} from '../../state/actions/raceActions'
 
 class RacesGrid extends Component {
 
     state = {
        races: [], 
-       headers: ['Id', 'Race Name', 'Description', 'Total Laps', 'Start Time', 'End Time', 'State', 'Actions'] 
+       headers: [{Header: 'Date' , accessor:'date', width:100}, 
+       {Header: 'Race Name', accessor:'name'}, 
+       {Header: 'Description', accessor:'description'}, 
+       {Header: 'Total Laps', accessor:'totalLaps', width:100, style :{textAlign:'center'}}, 
+       {Header: 'Start Time', accessor:'startTime'}, 
+       {Header: 'End Time', accessor:'endTime'}, 
+       {Header: 'State', accessor:'state', style:{textAlign:'center'}}, 
+       {Header: 'Actions', width:100,Cell: props => {
+           return (
+               <Button className='decrement-lap' 
+               onClick={() => this.props.deleteRace(props.original)}> Delete </Button>
+           )
+       }}] 
     }
 
     render() {
         this.state.races = this.props.currentRaces;
         return <div className="table-container">
-                  <table className="table">
-                    <thead>
-                    {
-                        this.state.headers.map((value, index) => (
-                            <Cell key={"header-" + index} content={value} header={true}/>
-                        ))
-                    }  
-                    </thead>
-                    <RaceList races={this.state.races}/>
-                </table>
+                  <ReactTable
+                    className='table'
+                    columns={this.state.headers}
+                    data={this.state.races}
+                    defaultPageSize={10}
+                    />
                </div>
     }
+}
+
+
+
+const mapDispatchToProps = (dispatch) => {
+    return {
+        deleteRace : (race) => dispatch(deleteRace(race))
+    }
+
 }
 
 const mapStateToProps = (state) => {
@@ -75,6 +65,6 @@ export default compose(
       storeAs:'currentRaces',
     }
   ]),
-  connect(mapStateToProps, null),
+  connect(mapStateToProps, mapDispatchToProps),
   
 )(RacesGrid)
