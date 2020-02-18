@@ -42,7 +42,6 @@ class RacesGrid extends Component {
 }
 
 
-
 const mapDispatchToProps = (dispatch) => {
     return {
         deleteRace : (race) => dispatch(deleteRace(race))

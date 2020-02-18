@@ -9,6 +9,11 @@ const raceReducer = (state = initState, action) => {
         case 'DELETED_RACE_ERR':    
             console.log("ERROR: " + action.err)
             return state;
+        case 'RACE_ADDED':
+            console.log('ADDED RACE')
+        case 'ADDED_RACE_ERR':    
+            console.log("ERROR: " + action.err)
+            return state;    
         default:
             return state;    
     }

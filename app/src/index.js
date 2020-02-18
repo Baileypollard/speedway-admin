@@ -16,13 +16,16 @@ import { ReactReduxFirebaseProvider, firebaseReducer } from 'react-redux-firebas
 import authReducer from './state/reducers/authReducer'
 import dashboardReducer from './state/reducers/dashboardReducer'
 import raceReducer from './state/reducers/raceReducer'
+import modalReducer from './state/reducers/modalReducer'
+import ModalContainer from './components/Modals/modalContainer'
 
 const rootReducer = combineReducers({
   firebase: firebaseReducer,
   firestore: firestoreReducer,
   auth: authReducer,
   dashboard: dashboardReducer,
-  race: raceReducer
+  race: raceReducer,
+  modal:modalReducer
 });
 
 const store = createStore(
@@ -46,6 +49,7 @@ const rrfProps = {
 ReactDOM.render(
   <Provider store={store}>
     <ReactReduxFirebaseProvider {...rrfProps}>      
+      <ModalContainer/>
       <App/>
     </ReactReduxFirebaseProvider>,
   </Provider>,
