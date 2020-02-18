@@ -1,7 +1,7 @@
 import {getFirestore} from 'redux-firestore'
 
 export const deleteRace = (race) => {
-
+    console.log(race)
     return (dispatch, getState, {getFirestore}) => 
     {
        const firestore = getFirestore();
@@ -15,11 +15,12 @@ export const deleteRace = (race) => {
 
 
 export const createRace = (race) => {
+    console.log(race)
 
     return (dispatch, getState, {getFirestore}) => 
     {
        const firestore = getFirestore();
-       firestore.add({collection: 'races', doc:race.id}, race).then(() => {
+       firestore.set({collection: 'races', doc:race.id}, race).then(() => {
            dispatch({type:'RACE_ADDED'})
        }).catch((err) => {
            dispatch({type:'ADDED_RACE_ERR', err})

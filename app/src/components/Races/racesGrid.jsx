@@ -13,7 +13,7 @@ class RacesGrid extends Component {
 
     state = {
        races: [], 
-       headers: [{Header: 'Date' , accessor:'date', width:100}, 
+       headers: [{Header: 'Date' , accessor:'date', width:110}, 
        {Header: 'Race Name', accessor:'name'}, 
        {Header: 'Description', accessor:'description'}, 
        {Header: 'Total Laps', accessor:'totalLaps', width:100, style :{textAlign:'center'}}, 

@@ -12,7 +12,8 @@ class RacesPage extends Component {
         return <div className="races">
                     <h1>Races</h1>
                     <div className="button">
-                        <Button className="ml-auto" onClick={() => this.openCreateRaceModal(this.props)}>Create Race</Button>
+                        <Button className="ml-auto" 
+                        onClick={() => this.openCreateRaceModal(this.props)}>Create Race</Button>
                     </div>
                     <RacesGrid/>
                 </div>
@@ -22,7 +23,6 @@ class RacesPage extends Component {
         props.showModal({
             open:true,
             title:'Create New Race',
-            message:'Create a new race',
             closeModal: props.hideModal
         }, 'createRace');
     }
