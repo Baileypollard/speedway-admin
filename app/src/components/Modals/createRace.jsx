@@ -2,12 +2,19 @@ import React, {Component} from 'react'
 import {Form, Col, Button} from 'react-bootstrap'
 import {createRace} from '../../state/actions/raceActions'
 import {connect} from 'react-redux'
+import {firestoreConnect} from 'react-redux-firebase'
+import {compose} from 'redux'
 
 class CreateRaceModal extends Component {
+  state = {
+    currentContestants: []
+  }
 
   handleSubmit(event) {
     event.preventDefault();
 
+    var contestants = event.target.elements.raceContestants.selectedOptions;
+    console.log(contestants)
     var race = {
       id:'race-' + event.target.elements.raceDate.value,
       name:event.target.elements.raceName.value,
@@ -17,12 +24,15 @@ class CreateRaceModal extends Component {
       state:'INACTIVE',
     }
 
-    this.props.createRace(race);
-
+    this.props.createRace(race, contestants);
     this.props.closeModal();
   }
-
   render() {
+    if (this.props.currentContestants === undefined) {
+      this.state.currentContestants = [];
+    } else {
+      this.state.currentContestants = this.props.currentContestants;
+    }
     return <div className="modal-content">
           <div className="modal-header">
           <h5 className="modal-title">{this.props.title}</h5>
@@ -45,14 +55,14 @@ class CreateRaceModal extends Component {
             <Form.Label>Description</Form.Label>
             <Form.Control placeholder="Short description about the race..." />
           </Form.Group>
+
           <Form.Group controlId="raceContestants">
           <Form.Label>Contestants</Form.Label>
             <Form.Control as="select" multiple>
-              <option>1</option>
-              <option>2</option>
-              <option>3</option>
-              <option>4</option>
-              <option>5</option>
+              {
+                this.state.currentContestants.map((contestant) => 
+                <option accessKey={contestant.id} value={JSON.stringify(contestant)}>{contestant.name + ' #' + contestant.carNumber}</option>)
+              }
             </Form.Control>
           </Form.Group>
           <Form.Row>
@@ -63,7 +73,7 @@ class CreateRaceModal extends Component {
           </Form.Row>
   
           <Button variant="primary" type="submit">
-            Create
+            Confirm
           </Button>
         </Form>
         </div>
@@ -77,9 +87,28 @@ class CreateRaceModal extends Component {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-      createRace: (race) => dispatch(createRace(race)),
+      createRace: (race, contestants) => dispatch(createRace(race, contestants)),
   }
 }
 
-export default connect(null, mapDispatchToProps)(CreateRaceModal);
+const mapStateToProps = (state) => {
+  const contestants = state.firestore.ordered.currentContestants; 
+  return {
+    currentContestants: contestants
+  }
+}
+
+
+export default compose(
+  firestoreConnect([
+    {
+      collection:'contestants',
+      storeAs:'currentContestants',
+    }
+  ]),
+  connect(mapStateToProps, mapDispatchToProps),
+  
+)(CreateRaceModal)
+
+
 

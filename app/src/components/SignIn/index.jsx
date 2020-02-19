@@ -26,7 +26,6 @@ class SignInFormBase extends Component {
   onSubmit = event => {
     event.preventDefault();
     const { email, password } = this.state;
-    console.log(this.props);
     this.props.signIn(this.state)
   };
   onChange = event => {

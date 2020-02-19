@@ -22,8 +22,12 @@ class RacesGrid extends Component {
        {Header: 'State', accessor:'state', style:{textAlign:'center'}}, 
        {Header: 'Actions', width:100,Cell: props => {
            return (
+             <div>
                <Button className='decrement-lap' 
-               onClick={() => this.props.deleteRace(props.original)}> Delete </Button>
+               onClick={() => this.props.deleteRace(props.original)}> Delete 
+               </Button>
+    
+            </div>
            )
        }}] 
     }

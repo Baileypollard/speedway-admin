@@ -14,14 +14,26 @@ export const deleteRace = (race) => {
 };
 
 
-export const createRace = (race) => {
-    console.log(race)
+export const createRace = (race, contestants) => {
+    var contestantArray = Array.prototype.slice.call(contestants);
 
     return (dispatch, getState, {getFirestore}) => 
     {
        const firestore = getFirestore();
-       firestore.set({collection: 'races', doc:race.id}, race).then(() => {
-           dispatch({type:'RACE_ADDED'})
+       firestore.set({collection: 'races', doc:race.id}, race)
+       .then(() => {
+            contestantArray.map((contestant) => {
+                var contestantValues = JSON.parse(contestant.value);
+                console.log(contestantValues)
+                firestore.set({collection:'races', doc:race.id, subcollections:[
+                    {
+                        collection:'contestants',
+                        doc:contestantValues.id,
+                    }
+                ]}, contestantValues).then(() => {
+                        dispatch({type:'RACE_ADDED'})
+                    })
+                })
        }).catch((err) => {
            dispatch({type:'ADDED_RACE_ERR', err})
        }) 
