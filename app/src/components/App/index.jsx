@@ -8,6 +8,7 @@ import Navigation from '../Navigation';
 import SignInPage from '../SignIn';
 import DashboardPage from '../Dashboard';
 import RacesPage from '../Races';
+import ContestantsPage from '../Contestants';
 
 import * as ROUTES from '../../constants/routes';
 
@@ -37,6 +38,9 @@ function App() {
             </PrivateRoute>
             <PrivateRoute path={ROUTES.RACES}>
               <RacesPage/>
+            </PrivateRoute>  
+            <PrivateRoute path={ROUTES.CONTESTANTS}>
+              <ContestantsPage/>
             </PrivateRoute>  
         </Router>
       </AuthIsLoaded>

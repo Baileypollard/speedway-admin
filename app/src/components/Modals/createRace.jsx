@@ -14,7 +14,7 @@ class CreateRaceModal extends Component {
     event.preventDefault();
 
     var contestants = event.target.elements.raceContestants.selectedOptions;
-    console.log(contestants)
+
     var race = {
       id:'race-' + event.target.elements.raceDate.value,
       name:event.target.elements.raceName.value,

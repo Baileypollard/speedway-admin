@@ -17,6 +17,8 @@ import authReducer from './state/reducers/authReducer'
 import dashboardReducer from './state/reducers/dashboardReducer'
 import raceReducer from './state/reducers/raceReducer'
 import modalReducer from './state/reducers/modalReducer'
+import contestantReducer from './state/reducers/contestantReducer'
+
 import ModalContainer from './components/Modals/modalContainer'
 
 const rootReducer = combineReducers({
@@ -25,7 +27,8 @@ const rootReducer = combineReducers({
   auth: authReducer,
   dashboard: dashboardReducer,
   race: raceReducer,
-  modal:modalReducer
+  modal:modalReducer,
+  contestant:contestantReducer
 });
 
 const store = createStore(

@@ -7,24 +7,21 @@ import {connect} from 'react-redux'
 import {Button} from 'react-bootstrap'
 import ReactTable from 'react-table-6';
 import 'react-table-6/react-table.css'
-import {deleteRace} from '../../state/actions/raceActions'
+import {deleteContestant} from '../../state/actions/contestantActions'
 
-class RacesGrid extends Component {
+class ContestantGrid extends Component {
 
     state = {
-       races: [], 
-       headers: [{Header: 'Date' , accessor:'date', width:110}, 
-       {Header: 'Race Name', accessor:'name'}, 
-       {Header: 'Description', accessor:'description'}, 
-       {Header: 'Total Laps', accessor:'totalLaps', width:100, style :{textAlign:'center'}}, 
-       {Header: 'Start Time', accessor:'startTime'}, 
-       {Header: 'End Time', accessor:'endTime'}, 
-       {Header: 'State', accessor:'state', style:{textAlign:'center'}}, 
+       contestants: [], 
+       headers: [
+       {Header: 'Name' , accessor:'name'}, 
+       {Header: 'Picture', accessor:'pictureName'}, 
+       {Header: 'Car Number', accessor:'carNumber'}, 
        {Header: 'Actions', width:100,Cell: props => {
            return (
              <div>
                <Button className='decrement-lap' 
-               onClick={() => this.props.deleteRace(props.original)}> Delete 
+               onClick={() => this.props.deleteContestant(props.original)}> Delete 
                </Button>
     
             </div>
@@ -33,12 +30,12 @@ class RacesGrid extends Component {
     }
 
     render() {
-        this.state.races = this.props.currentRaces;
+        this.state.contestants = this.props.currentContestants;
         return <div className="table-container">
                   <ReactTable
                     className='table'
                     columns={this.state.headers}
-                    data={this.state.races}
+                    data={this.state.contestants}
                     defaultPageSize={10}
                     />
                </div>
@@ -48,15 +45,15 @@ class RacesGrid extends Component {
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        deleteRace : (race) => dispatch(deleteRace(race))
+        deleteContestant : (contestant) => dispatch(deleteContestant(contestant))
     }
 
 }
 
 const mapStateToProps = (state) => {
-    const races = state.firestore.ordered.currentRaces; 
+    const contestants = state.firestore.ordered.currentContestants; 
     return {
-      currentRaces: races
+      currentContestants: contestants
     }
 }
   
@@ -64,11 +61,11 @@ const mapStateToProps = (state) => {
 export default compose(
   firestoreConnect([
     {
-      collection:'races',
-      storeAs:'currentRaces',
+      collection:'contestants',
+      storeAs:'currentContestants',
     }
   ]),
   connect(mapStateToProps, mapDispatchToProps),
   
-)(RacesGrid)
+)(ContestantGrid)
 
