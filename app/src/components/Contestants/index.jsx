@@ -5,6 +5,7 @@ import {Button} from 'react-bootstrap'
 import {connect} from 'react-redux'
 import {showModal, hideModal} from '../../state/actions/modalActions'
 import {createContestant} from '../../state/actions/contestantActions'
+
 class ContestantsPage extends Component {
 
     render() {

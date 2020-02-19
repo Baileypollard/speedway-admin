@@ -29,7 +29,7 @@ class NavigationBar extends Component {
   }
 
   getLinkList() {
-    let linkList =  ['Dashboard', 'Races', 'Contestants', 'Test 4']
+    let linkList =  ['Dashboard', 'Races', 'Contestants']
     return linkList
   }
 

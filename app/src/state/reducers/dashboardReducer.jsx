@@ -1,5 +1,6 @@
 const initState = {
-    activeRace : null
+    activeRace : null,
+    contestantImageMap : {}
 }
 
 const dashboardReducer = (state = initState, action) => {
@@ -20,7 +21,12 @@ const dashboardReducer = (state = initState, action) => {
         case 'ENDED_RACE':
             return {...state,
                 activeRace : null
-            }      
+            }
+        case 'IMAGE_URL_FETCHED':
+            console.log('url fetched')
+            return {...state,
+                contestantImageMap: {...state.contestantImageMap, [action.contestantId] : action.url}
+            }          
         default:
             return state;    
     }

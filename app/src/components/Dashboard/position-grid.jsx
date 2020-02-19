@@ -6,14 +6,18 @@ import '../Styles/data-table.css';
 import {firestoreConnect} from 'react-redux-firebase'
 import {compose} from 'redux'
 import {connect} from 'react-redux'
-import {updatePositions, updateLapCount} from '../../state/actions/dashboadActions'
+import {updatePositions, updateLapCount, getImageURLForContestants} from '../../state/actions/dashboadActions'
 import { firestoreDataSelector, firestoreOrderedSelector } from 'redux-firestore'
-import {Button} from 'react-bootstrap'
+import {Button, Image} from 'react-bootstrap'
 
-const SortableItem = SortableElement(({contestant, increment, decrement}) => 
+const SortableItem = SortableElement(({contestant, imageSrc, increment, decrement}) => 
   <tr> 
     <Cell key={contestant + "-position"} content={contestant.position}/> 
-    <Cell key={"photo"} content={"N/A"}/>
+    <Cell key={"photo"} content={
+      <Image className='contestant-image' 
+      src={imageSrc}
+      />
+    }/>
     <Cell key={"name"} content={contestant.name}/>
     <Cell key={"number"} content={contestant.carNumber}/>
     <Cell key={"lapsCompleted"} content={contestant.lapsCompleted}/>
@@ -24,16 +28,21 @@ const SortableItem = SortableElement(({contestant, increment, decrement}) =>
   </tr>
 );
 
-const SortableList = SortableContainer(({items, increment, decrement}) => {
+const SortableList = SortableContainer(({items, imageMap, increment, decrement}) => {
+  console.log(imageMap)
+
   if (items === undefined) 
     items = []
-
+  if (imageMap === undefined) {
+    imageMap = {}
+  }
   return (
       <tbody>
         {
           Object.values(items).map((d, key) => {
+            console.log(imageMap)
             return <SortableItem key={`contestant-${d.name}`} index={key} 
-            contestant={d} increment={increment} decrement={decrement}/>
+            contestant={d} imageSrc={imageMap[d.id]} increment={increment} decrement={decrement}/>
           })
         }
       </tbody>
@@ -56,8 +65,9 @@ class PositionGrid extends Component {
 
     static getDerivedStateFromProps(props, state) {
       if (props.contestants !== state.contestants) {
-        if (props.contestants != null)
+        if (props.contestants != null) {
           return state.contestants = props.contestants;
+        }
       }
       return null
     }
@@ -78,9 +88,15 @@ class PositionGrid extends Component {
         this.props.updateLapCount(contestant, newLapCount);
       }
     }
-    
 
+    componentDidUpdate(prevProps) {
+      if (this.props.contestants.length != prevProps.contestants.length) {
+        this.props.getImageUrlForContestants(this.state.contestants)
+      }
+    }
+    
     render() {
+      console.log(this.props.contestantImageMap)
         return <div className="table-container">
           <table className="table">
             <thead>
@@ -90,26 +106,28 @@ class PositionGrid extends Component {
                 ))
               }  
             </thead>
-            <SortableList items={this.state.contestants} onSortEnd={this.onSortEnd} increment={this.incrementLapCount} decrement={this.decrementLapCount}/> 
+            <SortableList items={this.state.contestants} imageMap={this.props.contestantImageMap} onSortEnd={this.onSortEnd} increment={this.incrementLapCount} decrement={this.decrementLapCount}/> 
           </table>
           </div>
-        
       }
   }  
 
 const mapDispatchToProps = (dispatch) => {
   return {
     updatePositions: (contestants) => dispatch(updatePositions(contestants)),
-    updateLapCount: (contestant, newLapCount) => dispatch(updateLapCount(contestant, newLapCount))
+    updateLapCount: (contestant, newLapCount) => dispatch(updateLapCount(contestant, newLapCount)),
+    getImageUrlForContestants: (contestants) => dispatch(getImageURLForContestants(contestants))
   }
 }
 
 const mapStateToProps = (state) => {
+  var contestantImageMap = state.dashboard.contestantImageMap;
   var contestants = state.firestore.ordered['racers'] !== undefined ? state.firestore.ordered['racers'] : [];
   //Sorting here since the DB query orderby is not reliable
   var sortedContestants = contestants.slice().sort((a,b) => { return a.position - b.position});      
   return {
-    contestants: sortedContestants
+    contestants: sortedContestants,
+    contestantImageMap: contestantImageMap
   }
 }
   
