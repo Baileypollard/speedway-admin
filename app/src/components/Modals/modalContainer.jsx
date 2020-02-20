@@ -2,10 +2,13 @@ import React from 'react'
 import { connect } from 'react-redux'
 import ReactModal from 'react-modal'
 import  CreateRaceModal  from './createRace'
+import  CreateContestantModal  from './createContestant'
+
 import '../Styles/modal.css'
 
 const MODAL_TYPES = {
     'createRace': CreateRaceModal,
+    'createContestant':CreateContestantModal
 }
 
 const mapStateToProps = state => ({
