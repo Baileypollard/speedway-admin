@@ -4,10 +4,11 @@ import Cell from '../Dashboard/cell'
 import {compose} from 'redux'
 import {firestoreConnect} from 'react-redux-firebase'
 import {connect} from 'react-redux'
-import {Button} from 'react-bootstrap'
+import {Button, Image} from 'react-bootstrap'
 import ReactTable from 'react-table-6';
 import 'react-table-6/react-table.css'
 import {deleteContestant} from '../../state/actions/contestantActions'
+import {getImageURLForContestants} from '../../state/actions/contestantImageActions'
 
 class ContestantGrid extends Component {
 
@@ -15,7 +16,11 @@ class ContestantGrid extends Component {
        contestants: [], 
        headers: [
        {Header: 'Name' , accessor:'name'}, 
-       {Header: 'Picture', accessor:'pictureName'}, 
+       {Header: 'Picture', accessor:'pictureName', Cell: props => {
+          return (<Image className='contestant-image' 
+          src={this.props.contestantImageMap[props.original.id]}
+          />)
+       }}, 
        {Header: 'Car Number', accessor:'carNumber'}, 
        {Header: 'Actions', width:100,Cell: props => {
            return (
@@ -29,8 +34,17 @@ class ContestantGrid extends Component {
        }}] 
     }
 
+    componentDidUpdate(prevProps) {
+      if (prevProps.currentContestants !== undefined) {
+        if (this.props.currentContestants.length != prevProps.currentContestants.length) {
+          this.props.getImageUrlForContestants(this.state.contestants)
+        }
+      }
+    }
+
     render() {
         this.state.contestants = this.props.currentContestants;
+
         return <div className="table-container">
                   <ReactTable
                     className='table'
@@ -45,15 +59,19 @@ class ContestantGrid extends Component {
 
 const mapDispatchToProps = (dispatch) => {
     return {
+        getImageUrlForContestants: (contestants) => dispatch(getImageURLForContestants(contestants)),
         deleteContestant : (contestant) => dispatch(deleteContestant(contestant))
     }
 
 }
 
 const mapStateToProps = (state) => {
+
+    const contestantImageMap = state.contestantImages.contestantImageMap;
     const contestants = state.firestore.ordered.currentContestants; 
     return {
-      currentContestants: contestants
+      currentContestants: contestants,
+      contestantImageMap
     }
 }
   

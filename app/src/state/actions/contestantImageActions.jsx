@@ -2,6 +2,9 @@ import firebase from '../../components/Firebase/index'
 
 
 export const getImageURLForContestants = (contestants) => {
+    if (contestants === undefined)
+        contestants = []
+
     return (dispatch, getState) => 
     {
         const storageRef = firebase.storage().ref('contestant-images');
