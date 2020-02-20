@@ -12,14 +12,18 @@ import {getImageURLForContestants} from '../../state/actions/contestantImageActi
 
 class ContestantGrid extends Component {
 
+    constructor(props) {
+      super(props)
+    }
+
     state = {
        contestants: [], 
        headers: [
        {Header: 'Name' , accessor:'name'}, 
-       {Header: 'Picture', accessor:'pictureName', Cell: props => {
-          return (<Image className='contestant-image' 
+       {Header: 'Picture', accessor:'pictureName', width:150, Cell: props => {
+          return <center><Image className='contestant-image' 
           src={this.props.contestantImageMap[props.original.id]}
-          />)
+          /></center>
        }}, 
        {Header: 'Car Number', accessor:'carNumber'}, 
        {Header: 'Actions', width:100,Cell: props => {
@@ -34,12 +38,13 @@ class ContestantGrid extends Component {
        }}] 
     }
 
-    componentDidUpdate(prevProps) {
-      if (prevProps.currentContestants !== undefined) {
-        if (this.props.currentContestants.length != prevProps.currentContestants.length) {
-          this.props.getImageUrlForContestants(this.state.contestants)
+
+    static getDerivedStateFromProps(props, state) {
+      if (props.currentContestants !== state.contestants) {
+            props.getImageUrlForContestants(props.currentContestants)
+            return state.contestants = props.currentContestants;
         }
-      }
+        return null
     }
 
     render() {
