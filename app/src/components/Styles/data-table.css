@@ -16,6 +16,9 @@
   }
   
   .Cell {
+    -moz-user-select: none;
+    -webkit-user-select: none;
+    -ms-user-select: none;
     border: 1px solid #f4f6f8;
     padding: 4px;
     text-align: center;

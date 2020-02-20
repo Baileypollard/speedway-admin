@@ -104,7 +104,7 @@ class PositionGrid extends Component {
                 ))
               }  
             </thead>
-            <SortableList items={this.state.contestants} imageMap={this.props.contestantImageMap} onSortEnd={this.onSortEnd} increment={this.incrementLapCount} decrement={this.decrementLapCount}/> 
+            <SortableList lockAxis="y" locklockToContainerEdges={true} items={this.state.contestants} imageMap={this.props.contestantImageMap} onSortEnd={this.onSortEnd} increment={this.incrementLapCount} decrement={this.decrementLapCount}/> 
           </table>
           </div>
       }

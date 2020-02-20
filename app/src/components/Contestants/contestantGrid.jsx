@@ -20,7 +20,7 @@ class ContestantGrid extends Component {
        contestants: [], 
        headers: [
        {Header: 'Name' , accessor:'name'}, 
-       {Header: 'Picture', accessor:'pictureName', width:150, Cell: props => {
+       {Header: 'Picture', accessor:'pictureName', Cell: props => {
           return <center><Image className='contestant-image' 
           src={this.props.contestantImageMap[props.original.id]}
           /></center>
