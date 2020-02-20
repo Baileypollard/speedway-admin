@@ -1,5 +1,4 @@
 export const showModal = ({ modalProps, modalType }) => dispatch => {
-    console.log('showing')
     dispatch({
       type: 'SHOW_MODAL',
       modalProps,
@@ -8,7 +7,6 @@ export const showModal = ({ modalProps, modalType }) => dispatch => {
   }
   
   export const hideModal = () => dispatch => {
-    console.log('hiding')
     dispatch({
       type: 'HIDE_MODAL'
     })

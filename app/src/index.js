@@ -18,6 +18,7 @@ import dashboardReducer from './state/reducers/dashboardReducer'
 import raceReducer from './state/reducers/raceReducer'
 import modalReducer from './state/reducers/modalReducer'
 import contestantReducer from './state/reducers/contestantReducer'
+import contestantImageReducer from './state/reducers/contestantImageReducer'
 
 import ModalContainer from './components/Modals/modalContainer'
 
@@ -28,7 +29,8 @@ const rootReducer = combineReducers({
   dashboard: dashboardReducer,
   race: raceReducer,
   modal:modalReducer,
-  contestant:contestantReducer
+  contestant:contestantReducer,
+  contestantImages:contestantImageReducer
 });
 
 const store = createStore(

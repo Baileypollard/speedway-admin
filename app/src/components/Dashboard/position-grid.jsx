@@ -6,7 +6,8 @@ import '../Styles/data-table.css';
 import {firestoreConnect} from 'react-redux-firebase'
 import {compose} from 'redux'
 import {connect} from 'react-redux'
-import {updatePositions, updateLapCount, getImageURLForContestants} from '../../state/actions/dashboadActions'
+import {updatePositions, updateLapCount} from '../../state/actions/dashboadActions'
+import {getImageURLForContestants} from '../../state/actions/contestantImageActions'
 import { firestoreDataSelector, firestoreOrderedSelector } from 'redux-firestore'
 import {Button, Image} from 'react-bootstrap'
 
@@ -29,7 +30,6 @@ const SortableItem = SortableElement(({contestant, imageSrc, increment, decremen
 );
 
 const SortableList = SortableContainer(({items, imageMap, increment, decrement}) => {
-  console.log(imageMap)
 
   if (items === undefined) 
     items = []
@@ -40,7 +40,6 @@ const SortableList = SortableContainer(({items, imageMap, increment, decrement})
       <tbody>
         {
           Object.values(items).map((d, key) => {
-            console.log(imageMap)
             return <SortableItem key={`contestant-${d.name}`} index={key} 
             contestant={d} imageSrc={imageMap[d.id]} increment={increment} decrement={decrement}/>
           })
@@ -96,7 +95,6 @@ class PositionGrid extends Component {
     }
     
     render() {
-      console.log(this.props.contestantImageMap)
         return <div className="table-container">
           <table className="table">
             <thead>
@@ -121,7 +119,8 @@ const mapDispatchToProps = (dispatch) => {
 }
 
 const mapStateToProps = (state) => {
-  var contestantImageMap = state.dashboard.contestantImageMap;
+  console.log(state)
+  var contestantImageMap = state.contestantImages.contestantImageMap;
   var contestants = state.firestore.ordered['racers'] !== undefined ? state.firestore.ordered['racers'] : [];
   //Sorting here since the DB query orderby is not reliable
   var sortedContestants = contestants.slice().sort((a,b) => { return a.position - b.position});      

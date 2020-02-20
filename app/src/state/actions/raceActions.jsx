@@ -1,7 +1,6 @@
 import {getFirestore} from 'redux-firestore'
 
 export const deleteRace = (race) => {
-    console.log(race)
     return (dispatch, getState, {getFirestore}) => 
     {
        const firestore = getFirestore();
@@ -24,7 +23,6 @@ export const createRace = (race, contestants) => {
        .then(() => {
             contestantArray.map((contestant) => {
                 var contestantValues = JSON.parse(contestant.value);
-                console.log(contestantValues)
                 firestore.set({collection:'races', doc:race.id, subcollections:[
                     {
                         collection:'contestants',
