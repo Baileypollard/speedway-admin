@@ -1,13 +1,23 @@
 import React, {Component} from 'react'
 import {Form, Col, Button} from 'react-bootstrap'
-import {createRace} from '../../state/actions/raceActions'
+import {createRace, updateRace} from '../../state/actions/raceActions'
 import {connect} from 'react-redux'
 import {firestoreConnect} from 'react-redux-firebase'
 import {compose} from 'redux'
+import {RACE_STATES} from '../../constants/raceStates'
+import Select from 'react-select';
 
 class CreateRaceModal extends Component {
+  
+  race = this.props.race;
+
   state = {
-    currentContestants: []
+    currentContestants: [],
+    raceName: this.race ? this.props.race.name : '', 
+    raceDate: this.race ? this.props.race.date : '', 
+    raceTotalLaps: this.race ? this.props.race.totalLaps : '', 
+    raceDescription: this.race ? this.props.race.description : '', 
+    state: this.race? this.props.race.state : 'INACTIVE',
   }
 
   handleSubmit(event) {
@@ -21,13 +31,29 @@ class CreateRaceModal extends Component {
       description:event.target.elements.raceDescription.value,
       totalLaps:event.target.elements.raceTotalLaps.value,
       date:event.target.elements.raceDate.value,
-      state:'INACTIVE',
+      state:event.target.elements.state.value,
     }
 
     this.props.createRace(race, contestants);
     this.props.closeModal();
   }
+
+  onChange(event) {
+    this.setState({ [event.target.name]: event.target.value });
+  };
+
+  createContestantLabels(contestants) {
+    let labels = [];
+    contestants.map((contestant) => {
+      labels.push({'value':contestant, 'label':contestant.name +' #' + contestant.carNumber})
+    })
+
+    return labels;
+  }
+
   render() {
+    const race = this.props.race ? this.props.race : {}
+
     if (this.props.currentContestants === undefined) {
       this.state.currentContestants = [];
     } else {
@@ -42,34 +68,71 @@ class CreateRaceModal extends Component {
           <Form.Row>
             <Form.Group as={Col} controlId="raceName">
               <Form.Label>Race Name</Form.Label>
-              <Form.Control type="text" placeholder="Race name" />
+              <Form.Control
+              name='raceName' 
+              type="text" 
+              placeholder="Race name" 
+              value={this.state.raceName} 
+              onChange={e => this.onChange(e)}/>
             </Form.Group>
   
             <Form.Group as={Col} controlId="raceDate">
               <Form.Label>Race Date</Form.Label>
-              <Form.Control type="date"/>
+              <Form.Control
+              name='raceDate' 
+              type="date" 
+              value={this.state.raceDate} 
+              onChange={e => this.onChange(e)}/>
             </Form.Group>
           </Form.Row>
   
           <Form.Group controlId="raceDescription">
             <Form.Label>Description</Form.Label>
-            <Form.Control placeholder="Short description about the race..." />
+            <Form.Control 
+            name='raceDescription'
+            placeholder="Short description about the race..." 
+            value={this.state.raceDescription}  
+            onChange={e => this.onChange(e)}/>
           </Form.Group>
 
           <Form.Group controlId="raceContestants">
           <Form.Label>Contestants</Form.Label>
-            <Form.Control as="select" multiple>
+            <Select
+            isMulti
+            options={this.createContestantLabels(this.state.currentContestants)}
+            />
+            {/* <Form.Control as="select" multiple>
               {
                 this.state.currentContestants.map((contestant) => 
                 <option accessKey={contestant.id} value={JSON.stringify(contestant)}>{contestant.name + ' #' + contestant.carNumber}</option>)
               }
             </Form.Control>
+            */}
           </Form.Group>
           <Form.Row>
             <Form.Group as={Col} md='4' controlId="raceTotalLaps">
               <Form.Label>Number of Laps</Form.Label>
-              <Form.Control type="number" placeholder="250" />
+              <Form.Control
+              name='raceTotalLaps' 
+              type="number" 
+              placeholder="250" 
+              value={this.state.raceTotalLaps} 
+              onChange={e => this.onChange(e)}/>
             </Form.Group>
+            
+            <Form.Group controlId="state">
+            <Form.Label>Race State</Form.Label>
+            <Form.Control 
+            as="select" 
+            name="state" 
+            value={this.state.state} 
+            onChange={e => this.onChange(e)}>
+            {
+                RACE_STATES.map((state) => 
+                <option accessKey={state} value={state}>{state}</option>)
+            }
+            </Form.Control>
+          </Form.Group>
           </Form.Row>
   
           <Button variant="primary" type="submit">
@@ -88,6 +151,7 @@ class CreateRaceModal extends Component {
 const mapDispatchToProps = (dispatch) => {
   return {
       createRace: (race, contestants) => dispatch(createRace(race, contestants)),
+      updateRace: (race, contestants) => dispatch(updateRace(race, contestants))
   }
 }
 

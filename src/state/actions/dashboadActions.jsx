@@ -1,6 +1,6 @@
 import {getFirestore} from 'redux-firestore'
 
-export const updatePositions = (contestants) => {
+export const updatePositions = (race, contestants) => {
 
     return (dispatch, getState, {getFirestore}) => 
     {
@@ -9,7 +9,7 @@ export const updatePositions = (contestants) => {
         
         contestants.forEach((contestant, index) => {
             const contestantRef = firestore.collection('races')
-            .doc('race-2019-01-01')
+            .doc(race.id)
             .collection('contestants').doc(contestant.id);
 
             batch.update(contestantRef, {position: index+1, id:contestant.id});
@@ -22,13 +22,13 @@ export const updatePositions = (contestants) => {
 };
 
 
-export const updateLapCount = (contestant, newLapCount) => {
+export const updateLapCount = (race, contestant, newLapCount) => {
 
     return (dispatch, getState, {getFirestore}) => 
     {
         const firestore = getFirestore();
 
-        firestore.update({collection:'races', doc:'race-2019-01-01', 
+        firestore.update({collection:'races', doc:race.id, 
         subcollections:[{collection:'contestants', doc:contestant.id}]}, 
         {lapsCompleted: newLapCount})
         .then(() => {

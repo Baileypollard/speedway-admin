@@ -73,18 +73,18 @@ class PositionGrid extends Component {
 
     onSortEnd = ({oldIndex, newIndex}) => {
       var newArray = arrayMove(this.state.contestants, oldIndex, newIndex);
-      this.props.updatePositions(newArray)
+      this.props.updatePositions(this.props.race, newArray)
     }
 
     incrementLapCount(contestant) {
       var newLapCount = contestant.lapsCompleted + 1;
-      this.props.updateLapCount(contestant, newLapCount);
+      this.props.updateLapCount(this.props.race, contestant, newLapCount);
     }
     
     decrementLapCount (contestant) {
       if (contestant.lapsCompleted > 0) {
         var newLapCount = contestant.lapsCompleted - 1;
-        this.props.updateLapCount(contestant, newLapCount);
+        this.props.updateLapCount(this.props.race, contestant, newLapCount);
       }
     }
 
@@ -112,8 +112,8 @@ class PositionGrid extends Component {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    updatePositions: (contestants) => dispatch(updatePositions(contestants)),
-    updateLapCount: (contestant, newLapCount) => dispatch(updateLapCount(contestant, newLapCount)),
+    updatePositions: (race, contestants) => dispatch(updatePositions(race, contestants)),
+    updateLapCount: (race, contestant, newLapCount) => dispatch(updateLapCount(race, contestant, newLapCount)),
     getImageUrlForContestants: (contestants) => dispatch(getImageURLForContestants(contestants))
   }
 }

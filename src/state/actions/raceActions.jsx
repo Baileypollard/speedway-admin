@@ -12,6 +12,34 @@ export const deleteRace = (race) => {
     };    
 };
 
+export const updateRace = (race, contestants) => {
+    var contestantArray = Array.prototype.slice.call(contestants);
+
+    return (dispatch, getState, {getFirestore}) => 
+    {
+       const firestore = getFirestore();
+       firestore.update({collection: 'races', doc:race.id}, race)
+       .then(() => {
+            contestantArray.map((contestant, index) => {
+                var contestantValues = JSON.parse(contestant.value);
+                contestantValues['lapsCompleted'] = 0;
+                contestantValues['position'] = index + 1;
+                
+                firestore.set({collection:'races', doc:race.id, subcollections:[
+                    {
+                        collection:'contestants',
+                        doc:contestantValues.id,
+                    }
+                ]}, contestantValues).then(() => {
+                        dispatch({type:'RACE_ADDED'})
+                    })
+                })
+       }).catch((err) => {
+           dispatch({type:'ADDED_RACE_ERR', err})
+       }) 
+    };    
+};
+
 
 export const createRace = (race, contestants) => {
     var contestantArray = Array.prototype.slice.call(contestants);
@@ -21,8 +49,10 @@ export const createRace = (race, contestants) => {
        const firestore = getFirestore();
        firestore.set({collection: 'races', doc:race.id}, race)
        .then(() => {
-            contestantArray.map((contestant) => {
+            contestantArray.map((contestant, index) => {
                 var contestantValues = JSON.parse(contestant.value);
+                contestantValues['lapsCompleted'] = 0;
+                contestantValues['position'] = index + 1;
                 firestore.set({collection:'races', doc:race.id, subcollections:[
                     {
                         collection:'contestants',

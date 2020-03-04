@@ -8,6 +8,7 @@ import {Button} from 'react-bootstrap'
 import ReactTable from 'react-table-6';
 import 'react-table-6/react-table.css'
 import {deleteRace} from '../../state/actions/raceActions'
+import {showModal, hideModal} from '../../state/actions/modalActions'
 
 class RacesGrid extends Component {
 
@@ -23,14 +24,30 @@ class RacesGrid extends Component {
        {Header: 'Actions', width:100,Cell: props => {
            return (
              <div>
-               <Button className='decrement-lap' 
-               onClick={() => this.props.deleteRace(props.original)}> Delete 
-               </Button>
+              <div>
+              <Button style={{'width':'100%'}} 
+              onClick={() => this.openEditRaceModal(this.props, props.original)}> Edit 
+              </Button>
+              </div>
+              <div>
+                <Button className='decrement-lap' 
+                onClick={() => this.props.deleteRace(props.original)}> Delete 
+                </Button>
+              </div>
             </div>
            )
        }}] 
     }
 
+    openEditRaceModal(props, originalRace) {
+      console.log(originalRace)
+      props.showModal({
+          open:true,
+          title:'Edit Race',
+          closeModal: props.hideModal,
+          race: originalRace,
+      }, 'createRace');
+    }
     render() {
         this.state.races = this.props.currentRaces;
         return <div className="table-container">
@@ -47,7 +64,9 @@ class RacesGrid extends Component {
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        deleteRace : (race) => dispatch(deleteRace(race))
+        deleteRace : (race) => dispatch(deleteRace(race)),
+        showModal: (modalProps, modalType) => dispatch(showModal({modalProps, modalType})),
+        hideModal: () => dispatch(hideModal())
     }
 
 }
