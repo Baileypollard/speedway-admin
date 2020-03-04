@@ -26,7 +26,6 @@ class RacesGrid extends Component {
                <Button className='decrement-lap' 
                onClick={() => this.props.deleteRace(props.original)}> Delete 
                </Button>
-    
             </div>
            )
        }}] 
