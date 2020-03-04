@@ -4,10 +4,10 @@ import { compose } from 'recompose';
 import * as ROUTES from '../../constants/routes';
 import {connect} from 'react-redux'
 import {signIn} from '../../state/actions/authActions'
-import {Button, OutlinedInput, FormControl, InputLabel } from '@material-ui/core';
+import {Button, OutlinedInput, FormControl, InputLabel, TextField } from '@material-ui/core';
 import {Redirect} from 'react-router-dom'
 
-import "./index.css";
+import "../Styles/sign-in.css";
 
 const SignInPage = () => (
     <SignInFormBase/>
@@ -34,9 +34,10 @@ class SignInFormBase extends Component {
   render() {
 
     var logo = require('../../images/logo.jpg')
-    const { email, password, error } = this.state;
+    const { email, password } = this.state;
+    const error = this.props.authError
     const isInvalid = password === '' || email === '';
-
+    console.log(error)
     const { auth } = this.props;
     
     if (auth.uid) return <Redirect to="/dashboard"/>
@@ -44,15 +45,14 @@ class SignInFormBase extends Component {
     return (
       <div className="Login">
         <form onSubmit={this.onSubmit}>
-        <FormControl variant="outlined" fullWidth>
-          <InputLabel ref="email" htmlFor="component-outlined">
+        <FormControl variant="filled" fullWidth>
+          <InputLabel ref="email">
             Email
           </InputLabel>
 
           <OutlinedInput
             name="email"
             className="inputLabel"
-            id="component-outlined"
             onChange={this.onChange}
             type="email"
             value={this.email}
@@ -60,22 +60,22 @@ class SignInFormBase extends Component {
 
         </FormControl>
 
-        <FormControl variant="outlined" fullWidth>
-          <InputLabel ref="password" htmlFor="component-outlined">
+        <FormControl variant="filled" fullWidth>
+          <InputLabel ref="password">
             Password
           </InputLabel>
 
           <OutlinedInput
             name="password"
             className="inputLabel"
-            id="component-outlined"
             value={this.password}
             type="password"
             onChange={this.onChange}
           />
           
         </FormControl>
-        {error && <p>{error.message}</p>}
+
+        {error && <p>{error}</p>}
         <Button variant="contained" type="submit" color="primary" fullWidth>
           Log In
         </Button>
@@ -93,7 +93,8 @@ const mapDispatchToProps = (dispatch) => {
 
 const mapStateToProps = (state) => {
   return {
-    auth: state.firebase.auth
+    auth: state.firebase.auth,
+    authError: state.auth.authError?.message
   }
 }
 
