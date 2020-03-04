@@ -13,18 +13,17 @@ class CreateRaceModal extends Component {
 
   state = {
     currentContestants: [],
-    raceName: this.race ? this.props.race.name : '', 
-    raceDate: this.race ? this.props.race.date : '', 
-    raceTotalLaps: this.race ? this.props.race.totalLaps : '', 
-    raceDescription: this.race ? this.props.race.description : '', 
-    state: this.race? this.props.race.state : 'INACTIVE',
+    raceName: this.race ? this.race.name : '', 
+    raceDate: this.race ? this.race.date : '', 
+    raceTotalLaps: this.race ? this.race.totalLaps : '', 
+    raceDescription: this.race ? this.race.description : '', 
+    state: this.race ? this.race.state : 'INACTIVE',
     selectedContestants: []
   }
 
   handleSubmit(event) {
     event.preventDefault();
 
-    console.log(this.state.selectedContestants)
     var contestants = this.state.selectedContestants;
 
     var race = {
@@ -59,6 +58,7 @@ class CreateRaceModal extends Component {
 
   render() {
     const race = this.props.race ? this.props.race : {}
+    const selectedContestants = this.props.selectedContestants ? this.props.selectedContestants : [];
 
     if (this.props.currentContestants === undefined) {
       this.state.currentContestants = [];
@@ -105,16 +105,10 @@ class CreateRaceModal extends Component {
           <Form.Label>Contestants</Form.Label>
             <Select
             isMulti
+            value={this.createContestantLabels(selectedContestants)}
             onChange={e => this.onContestantChange(e)}
             options={this.createContestantLabels(this.state.currentContestants)}
             />
-            {/* <Form.Control as="select" multiple>
-              {
-                this.state.currentContestants.map((contestant) => 
-                <option accessKey={contestant.id} value={JSON.stringify(contestant)}>{contestant.name + ' #' + contestant.carNumber}</option>)
-              }
-            </Form.Control>
-            */}
           </Form.Group>
           <Form.Row>
             <Form.Group as={Col} md='4' controlId="raceTotalLaps">
@@ -164,17 +158,29 @@ const mapDispatchToProps = (dispatch) => {
 
 const mapStateToProps = (state) => {
   const contestants = state.firestore.ordered.currentContestants; 
+  const selectedContestants = state.firestore.ordered.racers
   return {
-    currentContestants: contestants
+    currentContestants: contestants,
+    selectedContestants
   }
 }
 
 
 export default compose(
-  firestoreConnect([
+  firestoreConnect((props) => [
     {
       collection:'contestants',
       storeAs:'currentContestants',
+    },
+    {
+      collection:'races',
+      doc:props.race ? props.race.id : 'NULL',      
+      storeAs:'racers',
+      subcollections:[
+        {
+          collection:'contestants'
+        }
+      ]
     }
   ]),
   connect(mapStateToProps, mapDispatchToProps),
