@@ -50,9 +50,16 @@ export const createRace = (race, contestants) => {
        firestore.set({collection: 'races', doc:race.id}, race)
        .then(() => {
             contestantArray.map((contestant, index) => {
-                var contestantValues = JSON.parse(contestant.value);
-                contestantValues['lapsCompleted'] = 0;
-                contestantValues['position'] = index + 1;
+                
+                var contestantValues = {
+                    lapsCompleted:0,
+                    position:index+1,
+                    id:contestant.value.id,
+                    carNumber:contestant.value.carNumber,
+                    imageName:contestant.value.imageName,
+                    name:contestant.value.name
+                };
+
                 firestore.set({collection:'races', doc:race.id, subcollections:[
                     {
                         collection:'contestants',

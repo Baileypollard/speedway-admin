@@ -18,12 +18,14 @@ class CreateRaceModal extends Component {
     raceTotalLaps: this.race ? this.props.race.totalLaps : '', 
     raceDescription: this.race ? this.props.race.description : '', 
     state: this.race? this.props.race.state : 'INACTIVE',
+    selectedContestants: []
   }
 
   handleSubmit(event) {
     event.preventDefault();
 
-    var contestants = event.target.elements.raceContestants.selectedOptions;
+    console.log(this.state.selectedContestants)
+    var contestants = this.state.selectedContestants;
 
     var race = {
       id:'race-' + event.target.elements.raceDate.value,
@@ -41,6 +43,10 @@ class CreateRaceModal extends Component {
   onChange(event) {
     this.setState({ [event.target.name]: event.target.value });
   };
+
+  onContestantChange(event) {
+    this.setState({selectedContestants: event});
+  }
 
   createContestantLabels(contestants) {
     let labels = [];
@@ -99,6 +105,7 @@ class CreateRaceModal extends Component {
           <Form.Label>Contestants</Form.Label>
             <Select
             isMulti
+            onChange={e => this.onContestantChange(e)}
             options={this.createContestantLabels(this.state.currentContestants)}
             />
             {/* <Form.Control as="select" multiple>
