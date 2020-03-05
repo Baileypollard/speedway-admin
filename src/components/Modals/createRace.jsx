@@ -9,16 +9,29 @@ import Select from 'react-select';
 
 class CreateRaceModal extends Component {
   
-  race = this.props.race;
+  constructor(props) {
+    super(props);
+    const race = this.props.race;
+    this.state = {
+      currentContestants: [],
+      raceName: race ? race.name : '', 
+      raceDate: race ? race.date : '', 
+      raceTotalLaps: race ? race.totalLaps : '', 
+      raceDescription: race ? race.description : '', 
+      state: race ? race.state : 'INACTIVE',
+      selectedContestants: []
+    }
+  }
 
-  state = {
-    currentContestants: [],
-    raceName: this.race ? this.race.name : '', 
-    raceDate: this.race ? this.race.date : '', 
-    raceTotalLaps: this.race ? this.race.totalLaps : '', 
-    raceDescription: this.race ? this.race.description : '', 
-    state: this.race ? this.race.state : 'INACTIVE',
-    selectedContestants: []
+  static getDerivedStateFromProps(props, state) {
+    if (state.selectedContestants?.length == 0) {
+      if (props.selectedContestants !== undefined) {
+        return {
+          selectedContestants: props.selectedContestants
+        };
+      }
+    }
+    return null;
   }
 
   handleSubmit(event) {
@@ -49,6 +62,8 @@ class CreateRaceModal extends Component {
 
   createContestantLabels(contestants) {
     let labels = [];
+    if (contestants == undefined) 
+      return labels;
     contestants.map((contestant) => {
       labels.push({'value':contestant, 'label':contestant.name +' #' + contestant.carNumber})
     })
@@ -58,13 +73,13 @@ class CreateRaceModal extends Component {
 
   render() {
     const race = this.props.race ? this.props.race : {}
-    const selectedContestants = this.props.selectedContestants ? this.props.selectedContestants : [];
 
     if (this.props.currentContestants === undefined) {
       this.state.currentContestants = [];
     } else {
       this.state.currentContestants = this.props.currentContestants;
-    }
+    }    
+
     return <div className="modal-content">
           <div className="modal-header">
           <h5 className="modal-title">{this.props.title}</h5>
@@ -105,7 +120,7 @@ class CreateRaceModal extends Component {
           <Form.Label>Contestants</Form.Label>
             <Select
             isMulti
-            value={this.createContestantLabels(selectedContestants)}
+            value={this.createContestantLabels(this.state.selectedContestants)}
             onChange={e => this.onContestantChange(e)}
             options={this.createContestantLabels(this.state.currentContestants)}
             />

@@ -71,6 +71,7 @@ class PositionGrid extends Component {
       return null
     }
 
+    
     onSortEnd = ({oldIndex, newIndex}) => {
       var newArray = arrayMove(this.state.contestants, oldIndex, newIndex);
       this.props.updatePositions(this.props.race, newArray)

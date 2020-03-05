@@ -40,7 +40,6 @@ class RacesGrid extends Component {
     }
 
     openEditRaceModal(props, originalRace) {
-      console.log(originalRace)
       props.showModal({
           open:true,
           title:'Edit Race',
