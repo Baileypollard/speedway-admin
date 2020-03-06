@@ -1,4 +1,3 @@
-import {getFirestore} from 'redux-firestore'
 
 export const updatePositions = (race, contestants) => {
 

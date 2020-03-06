@@ -45,6 +45,7 @@ class RacesGrid extends Component {
           title:'Edit Race',
           closeModal: props.hideModal,
           race: originalRace,
+          edit:true
       }, 'createRace');
     }
     render() {

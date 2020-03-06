@@ -24,7 +24,7 @@ class CreateRaceModal extends Component {
   }
 
   static getDerivedStateFromProps(props, state) {
-    if (state.selectedContestants?.length == 0) {
+    if (props.edit == true && state.selectedContestants?.length == 0) {
       if (props.selectedContestants !== undefined) {
         return {
           selectedContestants: props.selectedContestants
@@ -60,16 +60,7 @@ class CreateRaceModal extends Component {
     this.setState({selectedContestants: event});
   }
 
-  createContestantLabels(contestants) {
-    let labels = [];
-    if (contestants == undefined) 
-      return labels;
-    contestants.map((contestant) => {
-      labels.push({'value':contestant, 'label':contestant.name +' #' + contestant.carNumber})
-    })
 
-    return labels;
-  }
 
   render() {
     const race = this.props.race ? this.props.race : {}
@@ -90,6 +81,7 @@ class CreateRaceModal extends Component {
             <Form.Group as={Col} controlId="raceName">
               <Form.Label>Race Name</Form.Label>
               <Form.Control
+              key='raceName'
               name='raceName' 
               type="text" 
               placeholder="Race name" 
@@ -100,6 +92,7 @@ class CreateRaceModal extends Component {
             <Form.Group as={Col} controlId="raceDate">
               <Form.Label>Race Date</Form.Label>
               <Form.Control
+              key='raceDate'
               name='raceDate' 
               type="date" 
               value={this.state.raceDate} 
@@ -120,9 +113,9 @@ class CreateRaceModal extends Component {
           <Form.Label>Contestants</Form.Label>
             <Select
             isMulti
-            value={this.createContestantLabels(this.state.selectedContestants)}
+            value={this.state.selectedContestants}
             onChange={e => this.onContestantChange(e)}
-            options={this.createContestantLabels(this.state.currentContestants)}
+            options={createContestantLabels(this.state.currentContestants)}
             />
           </Form.Group>
           <Form.Row>
@@ -139,6 +132,7 @@ class CreateRaceModal extends Component {
             <Form.Group controlId="state">
             <Form.Label>Race State</Form.Label>
             <Form.Control 
+            noOptionsMessage='No contestants to choose from...'
             as="select" 
             name="state" 
             value={this.state.state} 
@@ -162,6 +156,15 @@ class CreateRaceModal extends Component {
       </div>
   }
 }
+function createContestantLabels(contestants) {
+  let labels = [];
+  if (contestants == undefined) 
+    return labels;
+  contestants.map((contestant) => {
+    labels.push({'value':contestant, 'label':contestant.name +' #' + contestant.carNumber})
+  })
+  return labels;
+}
 
 
 const mapDispatchToProps = (dispatch) => {
@@ -173,7 +176,7 @@ const mapDispatchToProps = (dispatch) => {
 
 const mapStateToProps = (state) => {
   const contestants = state.firestore.ordered.currentContestants; 
-  const selectedContestants = state.firestore.ordered.racers
+  const selectedContestants = createContestantLabels(state.firestore.ordered.racers)
   return {
     currentContestants: contestants,
     selectedContestants

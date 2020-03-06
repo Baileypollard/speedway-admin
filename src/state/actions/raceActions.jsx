@@ -1,4 +1,3 @@
-import {getFirestore} from 'redux-firestore'
 
 export const deleteRace = (race) => {
     return (dispatch, getState, {getFirestore}) => 
