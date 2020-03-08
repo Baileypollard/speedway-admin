@@ -19,20 +19,19 @@ class ContestantGrid extends Component {
     state = {
        contestants: [], 
        headers: [
-       {Header: 'Name' , accessor:'name'}, 
+       {Header: 'Name' , accessor:'name', style:{textAlign:'center'}}, 
        {Header: 'Picture', accessor:'pictureName', Cell: props => {
           return <center><Image className='contestant-image' 
           src={this.props.contestantImageMap[props.original.id]}
           /></center>
        }}, 
-       {Header: 'Car Number', accessor:'carNumber'}, 
+       {Header: 'Car Number', accessor:'carNumber', style:{textAlign:'center'}}, 
        {Header: 'Actions', width:100,Cell: props => {
            return (
              <div>
                <Button className='decrement-lap' 
                onClick={() => this.props.deleteContestant(props.original)}> Delete 
                </Button>
-    
             </div>
            )
        }}] 

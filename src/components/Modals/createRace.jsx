@@ -47,8 +47,11 @@ class CreateRaceModal extends Component {
       date:event.target.elements.raceDate.value,
       state:event.target.elements.state.value,
     }
-
-    this.props.createRace(race, contestants);
+    if (this.props.edit) {
+      this.props.updateRace(race, contestants, this.props.selectedContestants);
+    } else {
+      this.props.createRace(race, contestants);
+    }
     this.props.closeModal();
   }
 
@@ -170,7 +173,7 @@ function createContestantLabels(contestants) {
 const mapDispatchToProps = (dispatch) => {
   return {
       createRace: (race, contestants) => dispatch(createRace(race, contestants)),
-      updateRace: (race, contestants) => dispatch(updateRace(race, contestants))
+      updateRace: (race, contestants, originalContestants) => dispatch(updateRace(race, contestants, originalContestants))
   }
 }
 

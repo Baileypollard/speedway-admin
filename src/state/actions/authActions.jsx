@@ -7,9 +7,9 @@ export const signIn = (creds) => {
             email: creds.email,
             password: creds.password
         }).then(() => {
-            dispatch({type: "LOGIN_SUCCESS"});
+            dispatch({ type: "LOGIN_SUCCESS" });
         }).catch((err) => {
-            dispatch({type: "LOGIN_ERROR", err});
+            dispatch({ type: "LOGIN_ERROR", err });
         })
     }
 }
@@ -17,7 +17,8 @@ export const signIn = (creds) => {
 export const signOut = () => {
     return (dispatch, getState) => {
         firebase.logout().then(() => {
-            dispatch({type: 'SIGNOUT_SUCCESS'});
+            dispatch({ type: 'SIGNOUT_SUCCESS' });
         }
-    )};
+        )
+    };
 }
