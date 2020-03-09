@@ -116,6 +116,7 @@ class CreateRaceModal extends Component {
           <Form.Label>Contestants</Form.Label>
             <Select
             isMulti
+            key='select-contestants'
             value={this.state.selectedContestants}
             onChange={e => this.onContestantChange(e)}
             options={createContestantLabels(this.state.currentContestants)}
@@ -164,7 +165,7 @@ function createContestantLabels(contestants) {
   if (contestants == undefined) 
     return labels;
   contestants.map((contestant) => {
-    labels.push({'value':contestant, 'label':contestant.name +' #' + contestant.carNumber})
+    labels.push({'value': contestant.id, 'data':contestant, 'label':contestant.name +' #' + contestant.carNumber})
   })
   return labels;
 }

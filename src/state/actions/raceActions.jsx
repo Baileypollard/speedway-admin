@@ -27,9 +27,9 @@ export const updateRace = (race, updatedContestants, originalContestants) => {
 
 
         deletedContestants.map((contestant) => {
-            console.log(contestant.value);
+            console.log(contestant.data);
             firestore.delete({ collection: 'races', doc: race.id, 
-            subcollections:[{collection:'contestants', doc:contestant.value.id}]});
+            subcollections:[{collection:'contestants', doc:contestant.data.id}]});
         })
 
         firestore.set({ collection: 'races', doc: race.id }, race)
@@ -38,10 +38,10 @@ export const updateRace = (race, updatedContestants, originalContestants) => {
                     var contestantValues = {
                         lapsCompleted: 0,
                         position: index + 1,
-                        id: contestant.value.id,
-                        carNumber: contestant.value.carNumber,
-                        imageName: contestant.value.imageName,
-                        name: contestant.value.name
+                        id: contestant.data.id,
+                        carNumber: contestant.data.carNumber,
+                        imageName: contestant.data.imageName,
+                        name: contestant.data.name
                     };
 
                     firestore.set({
@@ -75,10 +75,10 @@ export const createRace = (race, contestants) => {
                     var contestantValues = {
                         lapsCompleted: 0,
                         position: index + 1,
-                        id: contestant.value.id,
-                        carNumber: contestant.value.carNumber,
-                        imageName: contestant.value.imageName,
-                        name: contestant.value.name
+                        id: contestant.data.id,
+                        carNumber: contestant.data.carNumber,
+                        imageName: contestant.data.imageName,
+                        name: contestant.data.name
                     };
 
                     firestore.set({
