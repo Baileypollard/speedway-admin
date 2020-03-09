@@ -6,3 +6,4 @@ Using Redux for this application may have been a bit overkill, but thinking abou
 
 ![](dashboard.gif)
 
+![](races.gif)
