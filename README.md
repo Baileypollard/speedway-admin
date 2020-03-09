@@ -4,3 +4,6 @@ This web panel offers admins the ability to perform CRUD operations on contestan
 
 Using Redux for this application may have been a bit overkill, but thinking about the potential scalability issues that come with the context approach has made it my state management architecture of choice. 
 
+![](dashboard.gif)
+
+![](races.gif)
