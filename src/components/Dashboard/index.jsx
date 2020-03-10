@@ -26,7 +26,6 @@ class DashboardPage extends Component {
         <h1>Live Race</h1>
         <CollapisbleHeader race={race}/>
         <div className="button">
-          <Button className="mr-auto" disabled={isStarted}>Add Contestant</Button>
           <Button className="start" disabled={isStarted} onClick={() => this.startRace(race)}>Start Race</Button>
           <Button className="end" disabled={!isStarted} onClick={() => this.endRace(race)}>End Race</Button>
         </div>
@@ -44,7 +43,7 @@ class DashboardPage extends Component {
 const mapDispatchToProps = (dispatch) => {
     return {
       startRace: (race) => dispatch(startRace(race)),
-      endRace: (race) => dispatch(endRace(race))
+      endRace: (race) => dispatch(endRace(race)),
     }
 }
 
